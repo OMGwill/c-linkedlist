@@ -1,0 +1,152 @@
+Script started on Fri 04 Nov 2016 03:52:41 PM PDT
+]0;wluttmann@localhost:~/OPSYS/Assignment4/Assignment4WillLuttmann]7;file://localhost.localdomain/home/wluttmann/OPSYS/Assignment4/Assignment4WillLuttmann[?1034h[wluttmann@localhost Assignment4WillLuttmann]$ gcc[K[K[K./a.outls[Kgcc assign4.cls[Kgcc assign4.cls[Kgcc assign4.cls[K./a.out[K./a.outls[Kgcc assign4.cls[Kgedit assign4.c[1Pcd Assignment4ls[Kcd Assignment4gedit assign4.cls[Kgcc assign4.cls[K./a.out[Kgcc Assignmetn[K[Knt4.c
+]0;wluttmann@localhost:~/OPSYS/Assignment4/Assignment4WillLuttmann]7;file://localhost.localdomain/home/wluttmann/OPSYS/Assignment4/Assignment4WillLuttmann[wluttmann@localhost Assignment4WillLuttmann]$ cat Assign,em[K[K[K[Knment4.c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+	char letter;
+	int num;
+	struct Node* next;
+	struct Node* prev;
+};
+
+
+struct Node* head; //gloabl variable pointer to head node
+
+void listAddEnd(char c, int n);
+void displayList();
+void release(char c);
+struct Node* combine(struct Node* A, struct Node* B);
+void insert(struct Node* node, char c, int n);
+
+int main(){
+
+	head = (struct Node*) malloc(sizeof(head));
+	listAddEnd('*', 1);
+	listAddEnd('A', 4);
+	listAddEnd('*', 2);
+	listAddEnd('B', 1);
+	listAddEnd('*', 2);
+	listAddEnd('C', 5);
+	listAddEnd('*', 1);
+	listAddEnd('D', 8);
+	listAddEnd('*', 2);
+	listAddEnd('E', 2);
+	listAddEnd('*', 1);
+	listAddEnd('F', 4);
+	listAddEnd('*', 2);
+	listAddEnd('G', 3);
+	listAddEnd('*', 5);
+
+
+	displayList();
+
+	release('A');
+	
+	displayList();
+
+	release('C');
+
+	displayList();
+	
+return 0;
+}
+
+void listAddEnd(char c, int n){
+
+	if(head->num == 0)
+	{
+		head->letter = c;
+		head->num = n;
+	}else{	
+
+
+		struct Node* newNode = (struct Node*) malloc(sizeof (newNode));
+		struct Node* tmp = head;
+
+		newNode->letter = c;
+		newNode->num = n;
+
+	
+
+		while (tmp->next != NULL){
+			tmp = tmp->next;
+		}
+	
+		tmp->next = newNode;
+		newNode->prev = tmp;
+		newNode->next = NULL;
+	}
+}
+
+void displayList(){
+	struct Node* tmp = head;
+	
+	while(tmp->next != NULL){
+		printf("%c%d->",tmp->letter, tmp->num);
+		tmp= tmp->next;
+	}
+	
+	printf("%c%d->\n",tmp->letter, tmp->num);
+	
+}
+
+void release(char c){
+	struct Node* tmp = head;
+
+	while(tmp->letter != c){
+		tmp = tmp->next;
+	}
+	//found node to delete
+
+
+	if(tmp->next->letter == '*')
+		tmp = combine(tmp, tmp->next);
+	
+	if (tmp->prev->letter == '*')
+		tmp = combine(tmp->prev, tmp);
+
+	
+}
+
+struct Node* combine(struct Node* A, struct Node* B){
+
+	A->num = A->num + B->num;
+	A->letter = '*';
+	A->next = B->next;
+	A->next->prev = A;
+	free(B);
+
+	return A;
+
+}
+
+void insert(struct Node* node, char c, int n){
+	
+	struct Node* tmp = (struct Node*) malloc(sizeof(tmp));
+	
+	tmp->letter = c;
+	tmp->num = n;
+
+	if (node->next != NULL){
+		node->next->prev = tmp;
+		tmp->next = node->next;
+		node->next = tmp;
+		tmp->prev = node;	
+	} else {
+	
+		node->next = tmp;
+		tmp->prev = node;
+		tmp-> next = NULL;	
+	}
+	
+}
+]0;wluttmann@localhost:~/OPSYS/Assignment4/Assignment4WillLuttmann]7;file://localhost.localdomain/home/wluttmann/OPSYS/Assignment4/Assignment4WillLuttmann[wluttmann@localhost Assignment4WillLuttmann]$ ./a.out
+*1->A4->*2->B1->*2->C5->*1->D8->*2->E2->*1->F4->*2->G3->*5->
+*7->B1->*2->C5->*1->D8->*2->E2->*1->F4->*2->G3->*5->
+*7->B1->*8->D8->*2->E2->*1->F4->*2->G3->*5->
+]0;wluttmann@localhost:~/OPSYS/Assignment4/Assignment4WillLuttmann]7;file://localhost.localdomain/home/wluttmann/OPSYS/Assignment4/Assignment4WillLuttmann[wluttmann@localhost Assignment4WillLuttmann]$ exit
+exit
+
+Script done on Fri 04 Nov 2016 03:53:53 PM PDT
